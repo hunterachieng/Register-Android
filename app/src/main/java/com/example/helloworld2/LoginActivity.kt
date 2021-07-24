@@ -1,5 +1,6 @@
 package com.example.helloworld2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -58,6 +59,8 @@ class LoginActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful){
                         Toast.makeText(baseContext,"Login Successful", Toast.LENGTH_LONG).show()
+                        var intent = Intent(baseContext,CoursesActivity::class.java)
+                        startActivity(intent)
                     }
                     else{
                         try {
