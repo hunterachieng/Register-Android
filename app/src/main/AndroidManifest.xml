@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.HelloWorld2">
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".CourseDetailsActivity" />
-        <activity android:name=".CoursesActivity" />
+        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.CourseDetailsActivity" />
+        <activity android:name=".ui.CoursesActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

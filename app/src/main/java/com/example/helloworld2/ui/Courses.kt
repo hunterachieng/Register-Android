@@ -1,4 +1,4 @@
-package com.example.helloworld2
+package com.example.helloworld2.ui
 
 data class Courses(
     var courseCode:String,
