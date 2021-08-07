@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     val userViewModel:UserViewModel by viewModels()
-
+     var spinner = arrayOf("KENYAN","UGANDAN","RWANDAN","SUDAN","SOUTH SUDAN")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
@@ -35,14 +35,56 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        var error = false
+        binding.btLgIn.setOnClickListener {
+            var intent = Intent(baseContext,LoginActivity::class.java)
+            startActivity(intent)
+        }
         binding.btnRegisterLbl.setOnClickListener {
+            var name = binding.etName.text.toString() //validation
+            if (name.isEmpty()) {
+                error = true
+                binding.etName.setError("Name is required")
+            }
+            var dob = binding.etDob.text.toString()
+            if (dob.isEmpty()) {
+                error = true
+                binding.etDob.setError("Dob is required")
+            }
+            var nationalities = binding.spNationality
+            var natadapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,spinner)
+            natadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            nationalities.adapter = natadapter
+
+            var nationality = nationalities.selectedItem.toString()
+
+
+
+
+
+            var password= binding.etPassword.text.toString()
+            if (password.isEmpty()){
+                error = true
+                binding.etPassword.setError("Password required")
+            }
+            var email = binding.etEmail.text.toString()
+            if (email.isEmpty()){
+                error = true
+                binding.etEmail.setError("Email required")
+            }
+            var phoneNumber = binding.etPhoneNumber.text.toString()
+            if (phoneNumber.isEmpty()){
+                error = true
+                binding.etPhoneNumber.setError("PhoneNumber required")
+            }
+
             var registrationRequest = RegistrationRequest(
-                name=binding.etName.text.toString(),
-                phoneNumber=binding.etPhoneNumber.text.toString(),
-                email= binding.etEmail.text.toString(),
-                nationality= binding.spNationality.selectedItem.toString(),
-                dateOfBirth = binding.etDob.text.toString(),
-                password = binding.etPassword.text.toString()
+                name=name,
+                phoneNumber=phoneNumber,
+                email= email,
+                nationality= nationality,
+                dateOfBirth = dob,
+                password = password
             )
             userViewModel.registerUser(registrationRequest)
         }
@@ -60,77 +102,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//    fun clickRegister() {
-//        var error = false
-//        btnRegister.setOnClickListener {
-//            var name = etName.text.toString() //validation
-//            if (name.isEmpty()) {
-//                error = true
-//                etName.setError("Name is required")
-//            }
-//            var dob = etDob.text.toString()
-//            if (dob.isEmpty()) {
-//                error = true
-//                etDob.setError("Dob is required")
-//            }
-//            var nationality = spNationality.selectedItem.toString()
-//
-//            var password= etPassword.text.toString()
-//            if (password.isEmpty()){
-//                error = true
-//                etPassword.setError("Password required")
-//            }
-//            var email = etEmail.text.toString()
-//            if (email.isEmpty()){
-//                error = true
-//                etEmail.setError("Email required")
-//            }
-//            var phoneNumber = etPhoneNumber.text.toString()
-//            if (phoneNumber.isEmpty()){
-//                error = true
-//                etPhoneNumber.setError("PhoneNumber required")
-//            }
-//
-//           var registrationRequest = RegistrationRequest(
-//               name=name,
-//               phoneNumber=phoneNumber,
-//               email=email,
-//               nationality=nationality,
-//               dateOfBirth = dob,
-//               password = password
-//           )
-//     val retrofit = ApiClient.buildApiClient(ApiInterface::class.java)
-//            var request = retrofit.registerStudent(registrationRequest)
-//            request.enqueue(object :Callback<RegistrationResponse>{
-//                override fun onResponse(
-//                    call: Call<RegistrationResponse>,
-//                    response: Response<RegistrationResponse>
-//                ) {
-//                  if (response.isSuccessful){
-////                      var posts = response.body()
-//                      Toast.makeText(baseContext,"Registration Successful",Toast.LENGTH_LONG).show()
-//                      var intent = Intent(baseContext, LoginActivity::class.java)
-//                      startActivity(intent)
-//
-//                  }
-//                    else{
-//                        try {
-//                            val error = JSONObject(response.errorBody()!!.string())
-//                            Toast.makeText(baseContext,error.toString(), Toast.LENGTH_LONG).show()
-//                        }
-//                        catch (e:Exception){
-//                            Toast.makeText(baseContext,e.message, Toast.LENGTH_LONG).show()
-//                        }
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<RegistrationResponse>, t: Throwable) {
-//                   Toast.makeText(baseContext, t.message,Toast.LENGTH_LONG).show()
-//                }
-//            })
-//
-//       }
-//}
 }
 data class ApiError(var errors:List<String>)
 

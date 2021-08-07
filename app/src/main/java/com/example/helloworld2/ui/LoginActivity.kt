@@ -16,6 +16,7 @@ import com.example.helloworld2.api.ApiInterface
 import com.example.helloworld2.databinding.ActivityLoginBinding
 import com.example.helloworld2.models.LogInRequest
 import com.example.helloworld2.models.LogInResponse
+import com.example.helloworld2.models.SessionManager
 import com.example.helloworld2.viewmodel.LoginViewModel
 import org.json.JSONObject
 import retrofit2.Call
@@ -27,16 +28,21 @@ import java.lang.Exception
 class LoginActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding
-    lateinit var sharedPreferences: SharedPreferences
+    lateinit var sessionManager:SessionManager
+
     val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedPreferences = getSharedPreferences("HELLO_WORLD_2",Context.MODE_PRIVATE)
+        sessionManager = SessionManager(this)
+
 
       binding.btLogInButton.setOnClickListener {
+
+          var intent = Intent(baseContext, CoursesActivity::class.java)
+          startActivity(intent)
 
           var email = binding.etLogInEmail.text.toString()
           if (email.isEmpty()){
@@ -59,8 +65,9 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginLIveData.observe(this,{loginResponse ->
             Toast.makeText(baseContext,loginResponse.message,Toast.LENGTH_LONG).show()
             var accessToken = loginResponse.accessToken
-            sharedPreferences.edit().putString("ACCESS_TOKEN",accessToken).apply()
-            var x = sharedPreferences.getString("ACCESS_TOKEN","")
+            sessionManager.saveAccToken(accessToken)
+
+
 
         })
         loginViewModel.loginFailedLiveData.observe(this,{error->

@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class UserViewModel:ViewModel() {
     var registrationLiveData = MutableLiveData<RegistrationResponse>()
-    var regFailedLiveData = MutableLiveData<String>() //mutable workd like AJAX
+    var regFailedLiveData = MutableLiveData<String>() //mutable works like AJAX
     var userRepository = UserRepository()
 
     fun registerUser(registrationRequest: RegistrationRequest){

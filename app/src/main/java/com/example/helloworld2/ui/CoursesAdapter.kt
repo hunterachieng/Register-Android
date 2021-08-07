@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.helloworld2.ui.Courses
+import com.example.helloworld2.models.CourseResponse
+import retrofit2.Response
 
 
-class CoursesAdapter (var courseList:List<Courses>):RecyclerView.Adapter<CoursesViewHolder>(){
+class CoursesAdapter(var courseList: List<CourseResponse>):RecyclerView.Adapter<CoursesViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoursesViewHolder {
         var itemView = LayoutInflater.from(parent.context).inflate(R.layout.course_list_item,parent,false)
         return CoursesViewHolder(itemView)
