@@ -6,5 +6,6 @@ class Constants {
         const val ACCESS_TOKEN = "ACCESS_TOKEN"
         const val STUDENT_ID = "STUDENT_ID"
         const val EMPTY_STRING = ""
+        const val COURSE_ID = "COURSE_ID"
     }
 }

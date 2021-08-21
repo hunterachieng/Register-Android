@@ -12,9 +12,9 @@ class CourseViewModel:ViewModel(){
     var courseFailedLiveData = MutableLiveData<String>()
     var courseRepository = CourseRepository()
 
-    fun courses(){
+    fun courses(accessToken:String){
         viewModelScope.launch {
-            var response = courseRepository.courses()
+            var response = courseRepository.courses(accessToken)
             if (response.isSuccessful){
                 courseLiveData.postValue(response.body())
             }
@@ -23,4 +23,5 @@ class CourseViewModel:ViewModel(){
             }
         }
     }
+
 }

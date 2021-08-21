@@ -1,30 +1,15 @@
 package com.example.helloworld2.ui
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModel
-import com.example.helloworld2.Constants
-import com.example.helloworld2.R
-import com.example.helloworld2.api.ApiClient
-import com.example.helloworld2.api.ApiInterface
 import com.example.helloworld2.databinding.ActivityLoginBinding
 import com.example.helloworld2.models.LogInRequest
-import com.example.helloworld2.models.LogInResponse
 import com.example.helloworld2.models.SessionManager
 import com.example.helloworld2.viewmodel.LoginViewModel
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Exception
 
 
 class LoginActivity : AppCompatActivity() {
@@ -39,17 +24,10 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
-        redirect()
 
-    }
-    fun redirect(){
-        var accessToken = sessionManager.sharedPreferences.getString(Constants.ACCESS_TOKEN,Constants.EMPTY_STRING)
-        if (accessToken!!.isNotEmpty()){
-            startActivity(Intent(baseContext,CoursesActivity::class.java))
-        }
-        else{
-            startActivity(Intent(baseContext,LoginActivity::class.java))
-        }
+
+
+
     }
 
     override fun onResume() {

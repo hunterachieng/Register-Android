@@ -5,18 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.viewModels
-import com.example.helloworld2.api.ApiClient
-import com.example.helloworld2.api.ApiInterface
 import com.example.helloworld2.databinding.ActivityMainBinding
 import com.example.helloworld2.models.RegistrationRequest
-import com.example.helloworld2.models.RegistrationResponse
+import com.example.helloworld2.models.SessionManager
+import com.example.helloworld2.ui.CoursesActivity
 import com.example.helloworld2.ui.LoginActivity
 import com.example.helloworld2.viewmodel.UserViewModel
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     //casting:allows you to use variables in other functions
@@ -24,13 +18,27 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     val userViewModel:UserViewModel by viewModels()
+    lateinit var sessionManager: SessionManager
      var spinner = arrayOf("KENYAN","UGANDAN","RWANDAN","SUDAN","SOUTH SUDAN")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sessionManager = SessionManager(this)
+        redirect()
 
 
+    }
+    fun redirect() {
+        var accessToken = sessionManager.sharedPreferences.getString(
+            Constants.ACCESS_TOKEN,
+            Constants.EMPTY_STRING
+        )
+        if (accessToken!!.isNotEmpty()) {
+            startActivity(Intent(baseContext, CoursesActivity::class.java))
+        } else {
+            startActivity(Intent(baseContext, LoginActivity::class.java))
+        }
     }
 
     override fun onResume() {

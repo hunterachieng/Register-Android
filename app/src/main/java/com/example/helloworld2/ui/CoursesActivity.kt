@@ -1,21 +1,30 @@
 package com.example.helloworld2.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.helloworld2.CoursesAdapter
 import com.example.helloworld2.databinding.ActivityCoursesBinding
+import com.example.helloworld2.models.SessionManager
 import com.example.helloworld2.viewmodel.CourseViewModel
+import com.example.helloworld2.viewmodel.EnrolViewModel
 
 class CoursesActivity : AppCompatActivity() {
     lateinit var binding: ActivityCoursesBinding
     val courseViewModel:CourseViewModel by viewModels()
+    val enrolViewModel:EnrolViewModel by viewModels()
+    lateinit var coursesAdapter: CoursesAdapter
+    lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCoursesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sessionManager = SessionManager(this)
+
 
 
 
@@ -23,17 +32,31 @@ class CoursesActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        courseViewModel.courses()
-        var rvCourses = binding.rvcourses
-        courseViewModel.courseLiveData.observe(this,{courseResponse ->
-//            if (!courseResponse.courseId.isNullOrEmpty()){
+        var accessToken = sessionManager.fetchAccToken()
+        if (accessToken!!.isNotEmpty()){
+            courseViewModel.courses(accessToken = "Bearer ${accessToken}")
+        }
+        else{
+            startActivity(Intent(baseContext,LoginActivity::class.java))
+        }
 
-                var coursesAdapter = CoursesAdapter(courseResponse)
-                rvCourses.layoutManager = LinearLayoutManager(baseContext)
-                rvCourses.adapter = coursesAdapter
+        var rvCourses = binding.rvcourses
+
+        rvCourses.layoutManager = LinearLayoutManager(baseContext)
+        courseViewModel.courseLiveData.observe(this,{courseResponse ->
+
+            coursesAdapter = CoursesAdapter(courseResponse)
+            rvCourses.adapter = coursesAdapter
+
+
+
 
 
         })
+        courseViewModel.courseFailedLiveData.observe(this,{error->
+            Toast.makeText(baseContext,error,Toast.LENGTH_LONG).show()
+        })
+        courseViewModel.courses(accessToken)
     }
 
 
