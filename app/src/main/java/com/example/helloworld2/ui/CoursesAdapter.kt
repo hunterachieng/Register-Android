@@ -32,12 +32,12 @@ class CoursesAdapter(var courseList: List<CourseResponse>):RecyclerView.Adapter<
             sessionManager = SessionManager(context = this)
             var studentId = sessionManager.fetchAccToken(STUDENT_ID)
             var courseId = sessionManager.fetchAccToken(Constants.COURSE_ID)
-            var acssToken = sessionManager.fetchAccToken(Constants.ACCESS_TOKEN)
+            var accessToken = sessionManager.fetchAccToken(Constants.ACCESS_TOKEN)
             var enrolRequest = EnrolRequest(
                 studentId = studentId,
                 courseId = courseId
             )
-            enrolViewModel.enrol(enrolRequest, enrolRequest)
+            enrolViewModel.enrol(accessToken, enrolRequest)
         }
 
     }
